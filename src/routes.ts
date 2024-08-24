@@ -7,8 +7,10 @@ const routes = Router();
 const triageController = new TriageController();
 const userController = new UserController();
 
-routes.post("/triagem", triageController.create);
+routes.post("/triagem", authMiddleware, triageController.create);
 routes.get("/triagem", triageController.getAll);
+
+routes.post("/register", userController.create);
 routes.post("/login", userController.login);
 
 export default routes;
