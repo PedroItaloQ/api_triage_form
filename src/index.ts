@@ -4,6 +4,7 @@ import { AppDataSource } from './data-source';
 import routes from './routes';
 import cors from "cors";
 import { errorMiddleware } from './middlewares/error';
+import multer from "multer";
 
 AppDataSource.initialize().then(() => {
     const app = express();
