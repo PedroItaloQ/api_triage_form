@@ -10,7 +10,10 @@ import XLSX from "xlsx";
 
 export class UserController{
     async create(req: Request, res: Response) {
-        const { username, email, password } = req.body;
+        const { name, lastName, email, password, sector, state, role } = req.body;
+
+        // Verificar se o campo userName foi passado na requisição, senão, concatenar name e lastName
+        const userName = req.body.userName || `${name} ${lastName}`;
 
         const existingUser = await userRepository.findOneBy({ email });
 
@@ -21,15 +24,21 @@ export class UserController{
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = userRepository.create({
-            username,
+            name,
+            lastName,
+            userName, // Agora garantimos que userName sempre terá um valor
             email,
             password: hashedPassword,
+            sector,
+            state,
+            role,
         });
 
         await userRepository.save(newUser);
 
         return res.status(201).json({ message: "Usuário criado com sucesso!" });
     }
+
 
 
     async login(req: Request, res: Response) {
@@ -49,7 +58,7 @@ export class UserController{
 
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
 
-        return res.json({ token, email: user.email, username: user.username });
+        return res.json({ token, email: user.email, username: user.userName, sector: user.sector, state: user.state, role: user.role });
     }
 
     async uploadXlsx(req: Request, res: Response) {
@@ -70,14 +79,13 @@ export class UserController{
 
             await fileRepository.save(file);
 
-            // Processar o conteúdo do arquivo (opcional)
             const workbook = XLSX.read(fileData);
             const sheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetName];
             const data = XLSX.utils.sheet_to_json(sheet);
 
             for (const record of data) {
-                const { username, email, password } = record as { username: string; email: string; password: string; };
+                const { name, lastName, email, password } = record as { name: string; lastName: string; email: string; password: string; };
 
                 const existingUser = await userRepository.findOneBy({ email });
                 if (existingUser) {
@@ -87,8 +95,12 @@ export class UserController{
 
                 const hashedPassword = await bcrypt.hash(password, 10);
 
+                const userName = `${name} ${lastName}`
+
                 const newUser = userRepository.create({
-                    username,
+                    name,
+                    lastName,
+                    userName,
                     email,
                     password: hashedPassword,
                 });
@@ -96,7 +108,7 @@ export class UserController{
                 await userRepository.save(newUser);
             }
 
-            fs.unlinkSync(filePath); // Remover o arquivo temporário
+            fs.unlinkSync(filePath);
 
             return res.status(201).json({ message: "Arquivo enviado e processado com sucesso!" });
         } catch (error) {
