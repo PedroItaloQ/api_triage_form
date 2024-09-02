@@ -6,11 +6,28 @@ export class User {
     id: number;
 
     @Column()
-    username: string;
+    name: string;
+
+    @Column()
+    lastName: string;
+
+    @Column()
+    userName: string;
+
+    @Column()
 
     @Column()
     email: string;
 
     @Column()
-        password: string;
+    password: string;
+
+    @Column()
+    sector: string;
+
+    @Column()
+    state: string;
+
+    @Column()
+    role: string;
 }
