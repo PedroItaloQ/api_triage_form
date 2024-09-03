@@ -10,36 +10,45 @@ import XLSX from "xlsx";
 
 export class UserController{
     async create(req: Request, res: Response) {
-        const { name, lastName, email, password, sector, state, role } = req.body;
-
-        // Verificar se o campo userName foi passado na requisição, senão, concatenar name e lastName
-        const userName = req.body.userName || `${name} ${lastName}`;
-
-        const existingUser = await userRepository.findOneBy({ email });
-
-        if (existingUser) {
-            throw new BadRequestError("Usuário já cadastrado!");
+        try {
+            const { name, lastName, email, password, sector, state, role, status } = req.body;
+    
+            console.log('Creating user:', { name, lastName, email, sector, state, role, status });
+    
+            const userName = req.body.userName || `${name} ${lastName}`;
+    
+            const existingUser = await userRepository.findOneBy({ email });
+    
+            if (existingUser) {
+                throw new BadRequestError("Usuário já cadastrado!");
+            }
+    
+            const hashedPassword = await bcrypt.hash(password, 10);
+    
+            const newUser = userRepository.create({
+                name,
+                lastName,
+                userName,
+                email,
+                password: hashedPassword,
+                sector,
+                state,
+                role,
+                status: status ?? false,
+            });
+    
+            console.log('Saving new user:', newUser);
+    
+            await userRepository.save(newUser);
+    
+            console.log('User created successfully:', newUser);
+    
+            return res.status(201).json({ message: "Usuário criado com sucesso!" });
+        } catch (error) {
+            console.error('Error creating user:', error);
+            res.status(500).json({ message: "Erro interno ao criar o usuário." });
         }
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const newUser = userRepository.create({
-            name,
-            lastName,
-            userName, // Agora garantimos que userName sempre terá um valor
-            email,
-            password: hashedPassword,
-            sector,
-            state,
-            role,
-        });
-
-        await userRepository.save(newUser);
-
-        return res.status(201).json({ message: "Usuário criado com sucesso!" });
     }
-
-
 
     async login(req: Request, res: Response) {
         const { email, password } = req.body;
@@ -56,7 +65,7 @@ export class UserController{
             throw new BadRequestError("Senha inválida!");
         }
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, { expiresIn: '10h' });
 
         return res.json({ token, email: user.email, username: user.userName, sector: user.sector, state: user.state, role: user.role });
     }
@@ -71,7 +80,6 @@ export class UserController{
         try {
             const fileData = fs.readFileSync(filePath);
 
-            // Salvar o arquivo no banco de dados como Blob
             const file = fileRepository.create({
                 filename: req.file.originalname,
                 data: fileData
