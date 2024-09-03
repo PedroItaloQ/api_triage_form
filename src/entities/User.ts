@@ -15,6 +15,7 @@ export class User {
     userName: string;
 
     @Column()
+    status: boolean;
 
     @Column()
     email: string;
