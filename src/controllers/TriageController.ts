@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { triageRepository } from "../repositories/triageRepository";
-import { BadRequestError } from "../helpers/api-erros"; // Certifique-se de que este import está correto
+import { BadRequestError } from "../helpers/api-erros";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import 'dotenv/config';
@@ -42,6 +42,8 @@ export class TriageController {
                 assigned,
                 obfDescription,
                 observation,
+                state,
+                status = false
             } = req.body;
 
             console.log(
@@ -78,6 +80,8 @@ export class TriageController {
                 assigned,
                 obfDescription,
                 observation,
+                state,
+                status
             );
 
             const processExists = await triageRepository.findOneBy({ numberOfProcess });
@@ -120,6 +124,8 @@ export class TriageController {
                 assigned,
                 obfDescription,
                 observation,
+                state,
+                status: status
             });
 
             await triageRepository.save(newTriage);
