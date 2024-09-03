@@ -100,6 +100,12 @@ export class Triage {
 	
 	@Column({ type: 'text' })
 	obfDescription: string;
+
+	@Column({ type: 'text' })
+	status: boolean;
+
+	@Column({ type: 'text' })
+	state: string;
 	
 	@Column({ type: 'text' })
 	observation: string;
