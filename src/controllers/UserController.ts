@@ -24,6 +24,10 @@ export class UserController{
             }
     
             const hashedPassword = await bcrypt.hash(password, 10);
+
+            if (typeof status !== 'boolean') {
+                throw new BadRequestError("O campo 'status deve ser um Booleano");
+            };
     
             const newUser = userRepository.create({
                 name,
@@ -34,7 +38,7 @@ export class UserController{
                 sector,
                 state,
                 role,
-                status: status ?? false,
+                status: status
             });
     
             console.log('Saving new user:', newUser);
@@ -122,6 +126,15 @@ export class UserController{
         } catch (error) {
             fs.unlinkSync(filePath);
             throw new BadRequestError("Erro ao processar o arquivo.");
+        }
+    }
+
+    async getAllUsers(req: Request, res: Response) {
+        try {
+            const users = await userRepository.find();
+            return res.json(users);
+        } catch (error) {
+            return res.status(400).json({ error: "Erro ao buscar as triagens." });
         }
     }
 }
