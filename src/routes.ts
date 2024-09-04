@@ -14,8 +14,10 @@ const userController = new UserController();
 routes.post("/triagem", authMiddleware, triageController.create);
 routes.get("/triagem", triageController.getAll);
 
-routes.post("/register", userController.create);
 routes.post("/auth/login", userController.login);
+
+routes.post("/register", userController.create);
+routes.get("/users", userController.getAllUsers)
 
 routes.post("/upload", upload.single('file'), userController.uploadXlsx);
 
