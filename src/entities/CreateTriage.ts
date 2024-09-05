@@ -8,105 +8,105 @@ export class Triage {
 	@Column()
 	numberOfProcess: string;
 
-	@Column({ type: 'text' })
+	@Column()
 	author: string;
 
-	@Column({ type: 'text' })
+	@Column()
 	cpf: string;
 
-	@Column({ type: 'text' })
+	@Column()
 	bccReceiptDate: string;
 
-	@Column({ type: 'text' })
+	@Column()
 	bccReceiptTime: string;
 
-	@Column( {type: 'text'})
+	@Column()
 	captureDate: string;
 
-	@Column({ type: 'text' })
+	@Column()
 	captureTime: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	distributionData: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	processSystem: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	typeOfCommunication: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	communicationDate: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	communicationTime: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	endDateOfCommunication: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	reu: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	classe: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	foro: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	internalCode: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	vara: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	comarca: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	justiceSecret: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	tribunalDeOrigem: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	subject: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	hearingDate: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	hearingTime: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	causeValue: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	forFulfillment: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	fine: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	tipeOfFine: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	valueOfFine: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	fatalDeadline: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	assigned: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	obfDescription: string;
 
-	@Column({ type: 'text' })
+	@Column()
 	status: boolean;
 
-	@Column({ type: 'text' })
+	@Column()
 	state: string;
 	
-	@Column({ type: 'text' })
+	@Column()
 	observation: string;
 }
