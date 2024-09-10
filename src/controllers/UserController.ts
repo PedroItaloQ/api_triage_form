@@ -129,6 +129,58 @@ export class UserController{
         }
     }
 
+    async update(req: Request, res: Response) {
+        try {
+            const { id } = req.params;
+            const { name, lastName, email, password, sector, state, role, status } = req.body;
+    
+            console.log(`Recebida requisição de atualização para o usuário ID: ${id}`);
+    
+            const user = await userRepository.findOneBy({ id: parseInt(id) });
+    
+            if (!user) {
+                console.error(`Usuário com ID ${id} não encontrado!`);
+                throw new BadRequestError("Usuário não encontrado!");
+            }
+    
+            console.log(`Usuário encontrado: ${JSON.stringify(user)}`);
+    
+            const existingUser = await userRepository.findOneBy({ email });
+    
+            if (existingUser && existingUser.id !== user.id) {
+                console.error(`Outro usuário com o email ${email} já existe com ID ${existingUser.id}!`);
+                throw new BadRequestError("Outro usuário com este email já existe!");
+            }
+
+            user.name = name || user.name;
+            user.lastName = lastName || user.lastName;
+            user.email = email || user.email;
+            user.sector = sector || user.sector;
+            user.state = state || user.state;
+            user.role = role || user.role;
+            user.status = typeof status === 'boolean' ? status : user.status;
+    
+            console.log(`Dados do usuário após atualização: ${JSON.stringify(user)}`);
+    
+            if (password) {
+                user.password = await bcrypt.hash(password, 10);
+                console.log(`Senha do usuário com ID ${id} foi atualizada.`);
+            }
+    
+            await userRepository.save(user);
+    
+            console.log(`Usuário com ID ${id} atualizado com sucesso!`);
+    
+            return res.json({ message: "Usuário atualizado com sucesso!" });
+        } catch (error) {
+            console.error('Erro ao atualizar usuário:', error);
+            return res.status(500).json({ message: "Erro interno ao atualizar o usuário." });
+        }
+    }
+    
+    
+    
+
     async getAllUsers(req: Request, res: Response) {
         try {
             const users = await userRepository.find();
