@@ -18,6 +18,7 @@ routes.post("/auth/login", userController.login);
 
 routes.post("/register", userController.create);
 routes.get("/users", userController.getAllUsers)
+routes.put("/users/:id", authMiddleware, userController.update);
 
 routes.post("/upload", upload.single('file'), userController.uploadXlsx);
 
