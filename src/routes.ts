@@ -15,6 +15,7 @@ const userController = new UserController();
 
 routes.post("/triagem", authMiddleware, triageController.create);
 routes.get("/triagem", triageController.getAll);
+routes.put("/triagem/:numberOfProcess", authMiddleware, triageController.update);
 
 routes.post("/imported-triage/importar-linhas", importedTriageController.importRowsToTriage);
 routes.get("/triagem-importados", importedTriageController.getAll);
