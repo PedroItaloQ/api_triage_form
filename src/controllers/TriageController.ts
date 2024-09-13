@@ -144,6 +144,156 @@ export class TriageController {
         }
     }
 
+    async update(req: Request, res: Response) {
+        try {
+            const { numberOfProcess } = req.params;
+            console.log(`Iniciando atualização do processo: ${numberOfProcess}`);
+    
+            const {
+                author,
+                cpf,
+                bccReceiptDate,
+                bccReceiptTime,
+                captureDate,
+                captureTime,
+                distributionData,
+                processSystem,
+                typeOfCommunication,
+                communicationDate,
+                communicationTime,
+                endDateOfCommunication,
+                reu,
+                classe,
+                foro,
+                internalCode,
+                vara,
+                comarca,
+                justiceSecret,
+                tribunalDeOrigem,
+                subject,
+                hearingDate,
+                hearingTime,
+                causeValue,
+                forFulfillment,
+                fine,
+                tipeOfFine,
+                valueOfFine,
+                fatalDeadline,
+                assigned,
+                obfDescription,
+                observation,
+                state,
+                status
+            } = req.body;
+    
+            console.log('Dados recebidos para atualização:', {
+                author,
+                cpf,
+                bccReceiptDate,
+                bccReceiptTime,
+                captureDate,
+                captureTime,
+                distributionData,
+                processSystem,
+                typeOfCommunication,
+                communicationDate,
+                communicationTime,
+                endDateOfCommunication,
+                reu,
+                classe,
+                foro,
+                internalCode,
+                vara,
+                comarca,
+                justiceSecret,
+                tribunalDeOrigem,
+                subject,
+                hearingDate,
+                hearingTime,
+                causeValue,
+                forFulfillment,
+                fine,
+                tipeOfFine,
+                valueOfFine,
+                fatalDeadline,
+                assigned,
+                obfDescription,
+                observation,
+                state,
+                status
+            });
+    
+            const processExists = await triageRepository.findOneBy({ numberOfProcess });
+    
+            if (!processExists) {
+                console.log('Processo não encontrado:', numberOfProcess);
+                throw new BadRequestError("Processo não encontrado!");
+            }
+    
+            console.log('Processo encontrado:', processExists);
+    
+            // Atualiza os campos do processo encontrado com os dados recebidos
+            triageRepository.merge(processExists, {
+                author,
+                cpf,
+                bccReceiptDate,
+                bccReceiptTime,
+                captureDate,
+                captureTime,
+                distributionData,
+                processSystem,
+                typeOfCommunication,
+                communicationDate,
+                communicationTime,
+                endDateOfCommunication,
+                reu,
+                classe,
+                foro,
+                internalCode,
+                vara,
+                comarca,
+                justiceSecret,
+                tribunalDeOrigem,
+                subject,
+                hearingDate,
+                hearingTime,
+                causeValue,
+                forFulfillment,
+                fine,
+                tipeOfFine,
+                valueOfFine,
+                fatalDeadline,
+                assigned,
+                obfDescription,
+                observation,
+                state,
+                status
+            });
+    
+            console.log('Dados do processo após merge:', processExists);
+    
+            await triageRepository.save(processExists);
+
+            console.log('Processo salvo com o novo status:', processExists.status);
+
+            console.log('Processo salvo com sucesso:', processExists);
+    
+            return res.status(200).json({
+                message: "Processo atualizado com sucesso.",
+                data: processExists
+            });
+    
+        } catch (error) {
+            if (error instanceof BadRequestError) {
+                console.log('Erro de validação:', error.message);
+                return res.status(400).json({ error: error.message });
+            } else {
+                console.error('Erro interno do servidor:', error);
+                return res.status(500).json({ error: "Erro interno do servidor." });
+            }
+        }
+    }
+
     async getAll(req: Request, res: Response) {
         try {
             const triages = await triageRepository.find();
