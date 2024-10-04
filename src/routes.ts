@@ -15,8 +15,8 @@ const triageController = new TriageController();
 const triagesAdmController = new TriageAdmController();
 const userController = new UserController();
 
-routes.post("/triagem", authMiddleware, triageController.create);
-routes.get("/triagem", triageController.getAll);
+routes.post("/triage/legal/create/process", authMiddleware, triageController.create);
+routes.get("/triage/legal/processes", triageController.getAll);
 routes.put("/triagem/:numberOfProcess", authMiddleware, triageController.update);
 
 routes.post("/triagem-admin", authMiddleware, triagesAdmController.create);
@@ -28,7 +28,7 @@ routes.get("/triagem-importados", importedTriageController.getAll);
 
 routes.post("/auth/login", userController.login);
 
-routes.post("/register", userController.create);
+routes.post("/auth/register", userController.create);
 routes.get("/users", userController.getAllUsers);
 routes.put("/users/:id", authMiddleware, userController.update);
 
