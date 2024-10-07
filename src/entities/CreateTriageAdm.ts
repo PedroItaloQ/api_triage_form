@@ -6,10 +6,10 @@ export class TriageAdm {
     id: number;
 
     @Column()
-    dateOfReceipt: Date;
+    dateOfReceipt: string;
 
     @Column({ nullable: true })
-    dateOfTreatment: Date;
+    dateOfTreatment: string;
 
     @Column({ nullable: true })
     subject: string;
