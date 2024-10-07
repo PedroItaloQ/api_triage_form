@@ -24,14 +24,14 @@ export class TriageAdm {
     recipient: string;
 
     @Column({ nullable: true })
-    sector: string;
+    areaSector: string;
 
     @Column({ nullable: true })
     responsible: string;
 
     @Column({ nullable: true })
-    obs: string;
+    descriptionObf: string;
 
     @Column({ nullable: true })
-    nota: string;
+    observation: string;
 }
