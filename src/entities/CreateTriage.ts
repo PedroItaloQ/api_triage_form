@@ -6,19 +6,19 @@ export class Triage {
   id: number;
 
   @Column()
-  numberOfProcess: string;
+  processNumber: string;
 
   @Column()
-  author: string;
+  plaintiff: string;
 
   @Column()
-  cpf: string;
+  cpfCnpj: string;
 
   @Column({ nullable: true })
-  bccReceiptDate: string;
+  bccReceivedDate: string;
 
   @Column({ nullable: true })
-  bccReceiptTime: string;
+  bccReceivedTime: string;
 
   @Column({ nullable: true })
   captureDate: string;
@@ -27,13 +27,13 @@ export class Triage {
   captureTime: string;
 
   @Column({ nullable: true })
-  distributionData: string;
+  distributionDate: string;
 
   @Column({ nullable: true })
   processSystem: string;
 
   @Column({ nullable: true })
-  typeOfCommunication: string;
+  communicationType: string;
 
   @Column({ nullable: true })
   communicationDate: string;
@@ -42,31 +42,31 @@ export class Triage {
   communicationTime: string;
 
   @Column({ nullable: true })
-  endDateOfCommunication: string;
+  communicationEndDate: string;
 
   @Column({ nullable: true })
-  reu: string;
+  defendant: string;
 
   @Column({ nullable: true })
-  classe: string;
+  class_: string;
 
   @Column({ nullable: true })
-  foro: string;
+  forum: string;
 
   @Column({ nullable: true })
   internalCode: string;
 
   @Column({ nullable: true })
-  vara: string;
+  court: string;
 
   @Column({ nullable: true })
-  comarca: string;
+  district: string;
 
   @Column({ nullable: true })
   justiceSecret: string;
 
   @Column({ nullable: true })
-  tribunalDeOrigem: string;
+  originCourt: string;
 
   @Column({ nullable: true })
   subject: string;
@@ -78,25 +78,25 @@ export class Triage {
   hearingTime: string;
 
   @Column({ nullable: true })
-  causeValue: string;
+  caseValue: string;
 
   @Column({ nullable: true })
-  forFulfillment: string;
+  forCompliance: string;
 
   @Column({ nullable: true })
-  fine: string;
+  penalty: string;
 
   @Column({ nullable: true })
-  tipeOfFine: string;
+  penaltyType: string;
 
   @Column({ nullable: true })
-  valueOfFine: string;
+  penaltyAmount: string;
 
   @Column({ nullable: true })
-  fatalDeadline: string;
+  deadline: string;
 
   @Column({ nullable: true })
-  assigned: string;
+  responsible: string;
 
   @Column({ nullable: true })
   obfDescription: string;
@@ -108,5 +108,5 @@ export class Triage {
   state: string;
 
   @Column({ nullable: true })
-  observation: string;
+  note: string;
 }
