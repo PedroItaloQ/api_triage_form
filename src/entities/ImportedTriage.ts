@@ -6,7 +6,7 @@ export class ImportedTriage {
   id: number;
 
   @Column()
-  processSystem: string;
+  processNumber: string;
 
   @Column()
   plaintiff: string;
