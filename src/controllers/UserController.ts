@@ -28,10 +28,6 @@ export class UserController {
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            if (typeof status !== 'boolean') {
-                throw new BadRequestError("O campo 'status deve ser um Booleano");
-            };
-
             const newUser = userRepository.create({
                 name,
                 lastName,
@@ -41,7 +37,7 @@ export class UserController {
                 sector,
                 state,
                 role,
-                status: status
+                status
             });
 
             console.log('Saving new user:', newUser);
@@ -81,116 +77,115 @@ export class UserController {
         if (!req.file) {
             throw new BadRequestError("Nenhum arquivo foi enviado!");
         }
-    
+
         const filePath = path.join(__dirname, '../../', req.file.path);
-    
+
         try {
             // Ler o conteúdo do arquivo
             const fileData = fs.readFileSync(filePath);
-    
+
             // Salvar o arquivo no banco de dados
             const file = fileRepository.create({
                 filename: req.file.originalname,
                 data: fileData
             });
-    
+
             await fileRepository.save(file);
-    
+
             // Ler o arquivo XLSX e converter para JSON
             const workbook = XLSX.read(fileData, { type: 'buffer' });
             const sheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetName];
             const data = XLSX.utils.sheet_to_json(sheet);
-    
+
             // Obter o repositório da entidade 'ImportedTriage'
             const importedTriageRepository = AppDataSource.getRepository(ImportedTriage);
             const savedRows: ImportedTriage[] = [];
-    
+
             for (const record of data) {
                 const {
-                    numberOfProcess,
-                    author,
-                    cpf,
-                    bccReceiptDate,
-                    bccReceiptTime,
+                    processNumber,
+                    plaintiff,
+                    cpfCnpj,
+                    bccReceivedDate,
+                    bccReceivedTime,
                     captureDate,
                     captureTime,
-                    distributionData,
+                    distributionDate,
                     processSystem,
-                    typeOfCommunication,
+                    communicationType,
                     communicationDate,
                     communicationTime,
-                    endDateOfCommunication,
-                    reu,
-                    classe,
-                    foro,
+                    communicationEndDate,
+                    defendant,
+                    class_,
+                    forum,
                     internalCode,
-                    vara,
-                    comarca,
+                    court,
+                    district,
                     justiceSecret,
-                    tribunalDeOrigem,
+                    originCourt,
                     subject,
                     hearingDate,
                     hearingTime,
-                    causeValue,
-                    forFulfillment,
-                    fine,
-                    tipeOfFine,
-                    valueOfFine,
-                    fatalDeadline,
-                    assigned,
+                    caseValue,
+                    forCompliance,
+                    penalty,
+                    penaltyType,
+                    penaltyAmount,
+                    deadline,
+                    responsible,
                     obfDescription,
-                    observation,
+                    note,
                     state,
                     status,
                 } = record as ImportedTriage;
-    
-                // Criar um novo registro de triagem importada com status padrão 'false'
+
                 const newImportedTriage = importedTriageRepository.create({
-                    numberOfProcess,
-                    author,
-                    cpf,
-                    bccReceiptDate,
-                    bccReceiptTime,
+                    processNumber,
+                    plaintiff,
+                    cpfCnpj,
+                    bccReceivedDate,
+                    bccReceivedTime,
                     captureDate,
                     captureTime,
-                    distributionData,
+                    distributionDate,
                     processSystem,
-                    typeOfCommunication,
+                    communicationType,
                     communicationDate,
                     communicationTime,
-                    endDateOfCommunication,
-                    reu,
-                    classe,
-                    foro,
+                    communicationEndDate,
+                    defendant,
+                    class_,
+                    forum,
                     internalCode,
-                    vara,
-                    comarca,
+                    court,
+                    district,
                     justiceSecret,
-                    tribunalDeOrigem,
+                    originCourt,
                     subject,
                     hearingDate,
                     hearingTime,
-                    causeValue,
-                    forFulfillment,
-                    fine,
-                    tipeOfFine,
-                    valueOfFine,
-                    fatalDeadline,
-                    assigned,
+                    caseValue,
+                    forCompliance,
+                    penalty,
+                    penaltyType,
+                    penaltyAmount,
+                    deadline,
+                    responsible,
                     obfDescription,
-                    observation,
+                    note,
                     state,
-                    status: Boolean(status) || false, // Definir como 'false' se for indefinido ou falso
+                    status,
                 });
-    
+
                 await importedTriageRepository.save(newImportedTriage);
                 savedRows.push(newImportedTriage);
             }
-    
+
             // Remover o arquivo após o processamento
             fs.unlinkSync(filePath);
-    
+
             return res.status(201).json({
                 message: "Arquivo enviado e processado com sucesso!",
                 data: savedRows,
@@ -232,7 +227,7 @@ export class UserController {
             user.sector = sector || user.sector;
             user.state = state || user.state;
             user.role = role || user.role;
-            user.status = typeof status === 'boolean' ? status : user.status;
+            user.status = status || user.status;
 
             console.log(`Dados do usuário após atualização: ${JSON.stringify(user)}`);
 
