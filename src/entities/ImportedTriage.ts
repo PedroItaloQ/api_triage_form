@@ -102,7 +102,7 @@ export class ImportedTriage {
   obfDescription: string;
 
   @Column({ nullable: true })
-  status: boolean;
+  status: string;
 
   @Column({ nullable: true })
   state: string;
