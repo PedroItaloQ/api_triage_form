@@ -33,5 +33,5 @@ export class TriageAdm {
     descriptionObf: string;
 
     @Column({ nullable: true })
-    observation: string;
+    note: string;
 }
