@@ -15,10 +15,10 @@ export class TriageAdmController {
                 type,
                 emission,
                 recipient,
-                sector,
+                areaSector,
                 responsible,
-                obs,
-                nota
+                descriptionObf,
+                note
             } = req.body;
 
             console.log(
@@ -28,10 +28,10 @@ export class TriageAdmController {
                 type,
                 emission,
                 recipient,
-                sector,
+                areaSector,
                 responsible,
-                obs,
-                nota
+                descriptionObf,
+                note
             )
 
             const processExists = await triageAdmRepository.findOneBy({ type });
@@ -47,10 +47,10 @@ export class TriageAdmController {
                 type,
                 emission,
                 recipient,
-                sector,
+                areaSector,
                 responsible,
-                obs,
-                nota
+                descriptionObf,
+                note
             });
 
             await triageAdmRepository.save(newTriageAdm);
