@@ -17,10 +17,10 @@ const userController = new UserController();
 
 routes.post("/triage/legal/create/process", authMiddleware, triageController.create);
 routes.get("/triage/legal/processes", triageController.getAll);
-routes.put("/triagem/:numberOfProcess", authMiddleware, triageController.update);
+routes.put("/triage/legal/update/process/:numberOfProcess", authMiddleware, triageController.update);
 
-routes.post("/triagem-admin", authMiddleware, triagesAdmController.create);
-routes.get("/triagem-admin" , authMiddleware, triagesAdmController.getAll);
+routes.post("/triage/administrative/create/process", authMiddleware, triagesAdmController.create);
+routes.get("/triage/administrative/processes" , authMiddleware, triagesAdmController.getAll);
 
 
 routes.post("/imported-triage/importar-linhas", importedTriageController.importRowsToTriage);
@@ -29,9 +29,9 @@ routes.get("/triagem-importados", importedTriageController.getAll);
 routes.post("/auth/login", userController.login);
 
 routes.post("/auth/register", userController.create);
-routes.get("/users", userController.getAllUsers);
+routes.get("/users/view", userController.getAllUsers);
 routes.put("/users/:id", authMiddleware, userController.update);
 
-routes.post("/upload", upload.single('file'), userController.uploadXlsx);
+routes.post("/format", upload.single('file'), userController.uploadXlsx);
 
 export default routes;
