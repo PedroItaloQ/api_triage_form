@@ -20,6 +20,7 @@ routes.get("/triage/legal/processes", triageController.getAll);
 routes.put("/triage/legal/update/process/:numberOfProcess", authMiddleware, triageController.update);
 
 routes.post("/triage/administrative/create/process", authMiddleware, triagesAdmController.create);
+routes.put("/triage/administrative/update/:type", authMiddleware, triagesAdmController.update);
 routes.get("/triage/administrative/processes" , authMiddleware, triagesAdmController.getAll);
 
 
